@@ -2,29 +2,31 @@ package aed;
 
 public class Recordatorio {
 
+    private String mensajeClase;
+    private Horario horarioClase;
+    private Fecha fechaClase;
+
     public Recordatorio(String mensaje, Fecha fecha, Horario horario) {
-        // Implementar
+        mensajeClase = mensaje;
+        fechaClase = fecha;
+        horarioClase = horario;
     }
 
     public Horario horario() {
-        // Implementar
-        return null;
+        return horarioClase;
     }
 
     public Fecha fecha() {
-        // Implementar
-        return null;
+        return fechaClase;
     }
 
     public String mensaje() {
-        // Implementar
-        return "";
+        return mensajeClase;
     }
 
     @Override
     public String toString() {
-        // Implementar
-        return "";
+        return "mensaje @ " + mensajeClase + " " + fechaClase + " " + horarioClase;
     }
 
     @Override
