@@ -20,20 +20,19 @@ public class Horario {
 
     @Override
     public String toString() {
-        return horaClase + ":" +minutosClase;
+        return horaClase + ":" + minutosClase;
     }
 
     @Override
     public boolean equals(Object otro) {
         boolean otroEsNull = (otro == null);
         boolean claseDist = otro.getClass() != this.getClass();
-        if(otroEsNull || claseDist){
+        if (otroEsNull || claseDist) {
             return false;
         }
         Horario otroHorario = (Horario) otro;
         return horaClase == otroHorario.horaClase && minutosClase == otroHorario.minutosClase;
-        
-        
+
     }
 
 }

@@ -8,7 +8,7 @@ public class Recordatorio {
 
     public Recordatorio(String mensaje, Fecha fecha, Horario horario) {
         mensajeClase = mensaje;
-        fechaClase = fecha;
+        fechaClase = new Fecha(fecha);
         horarioClase = horario;
     }
 
@@ -17,7 +17,7 @@ public class Recordatorio {
     }
 
     public Fecha fecha() {
-        return fechaClase;
+        return new Fecha(fechaClase);
     }
 
     public String mensaje() {

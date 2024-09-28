@@ -9,45 +9,44 @@ public class Fecha {
         mesClase = mes;
     }
 
-    public Fecha(Fecha fecha) { //no se si me estoy mandando alguna cagada pero no le encuentro utilidad a esto
-        // Implementar
+    public Fecha(Fecha fecha) {
+        this.diaClase = fecha.diaClase;
+        this.mesClase = fecha.mesClase;
     }
 
     public Integer dia() {
         return diaClase;
     }
 
-    public Integer mes() { //estoy asumiendo que hay un requiere que no permite que el mes sea > 12
+    public Integer mes() { // estoy asumiendo que hay un requiere que no permite que el mes sea > 12
         return mesClase;
     }
 
     public String toString() {
-        return diaClase +"/"+ mesClase;
+        return diaClase + "/" + mesClase;
     }
 
     @Override
     public boolean equals(Object otra) {
         boolean otraEsNull = (otra == null);
         boolean claseDist = otra.getClass() != this.getClass();
-        if(otraEsNull || claseDist){
+        if (otraEsNull || claseDist) {
             return false;
         }
         Fecha otraFecha = (Fecha) otra;
         return diaClase == otraFecha.diaClase && mesClase == otraFecha.mesClase;
-        
+
     }
 
     public void incrementarDia() {
         if (diasEnMes(mesClase) == diaClase) {
             diaClase = 1;
-            if(mesClase < 12){
-                mesClase +=1;
-            }
-            else{
+            if (mesClase < 12) {
+                mesClase += 1;
+            } else {
                 mesClase = 1;
             }
-        }
-        else{
+        } else {
             diaClase += 1;
         }
     }
