@@ -1,37 +1,55 @@
 package aed;
 
 public class Fecha {
+    private int diaClase;
+    private int mesClase;
+
     public Fecha(int dia, int mes) {
-        // Implementar
+        diaClase = dia;
+        mesClase = mes;
     }
 
-    public Fecha(Fecha fecha) {
+    public Fecha(Fecha fecha) { //no se si me estoy mandando alguna cagada pero no le encuentro utilidad a esto
         // Implementar
     }
 
     public Integer dia() {
-        // Implementar
-        return -1;
+        return diaClase;
     }
 
-    public Integer mes() {
-        // Implementar
-        return -1;
+    public Integer mes() { //estoy asumiendo que hay un requiere que no permite que el mes sea > 12
+        return mesClase;
     }
 
     public String toString() {
-        // Implementar
-        return "";
+        return diaClase +"/"+ mesClase;
     }
 
     @Override
     public boolean equals(Object otra) {
-        // Implementar
-        return true;
+        boolean otraEsNull = (otra == null);
+        boolean claseDist = otra.getClass() != this.getClass();
+        if(otraEsNull || claseDist){
+            return false;
+        }
+        Fecha otraFecha = (Fecha) otra;
+        return diaClase == otraFecha.diaClase && mesClase == otraFecha.mesClase;
+        
     }
 
     public void incrementarDia() {
-        // Implementar
+        if (diasEnMes(mesClase) == diaClase) {
+            diaClase = 1;
+            if(mesClase < 12){
+                mesClase +=1;
+            }
+            else{
+                mesClase = 1;
+            }
+        }
+        else{
+            diaClase += 1;
+        }
     }
 
     private int diasEnMes(int mes) {
