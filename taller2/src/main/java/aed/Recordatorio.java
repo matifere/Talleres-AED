@@ -30,15 +30,18 @@ public class Recordatorio {
     }
 
     @Override
-    public boolean equals(Object otro) { //falta el test de esto (supongo que esta bien igual es identico al resto)
+    public boolean equals(Object otro) {
+
         boolean otroEsNull = (otro == null);
         boolean claseDist = otro.getClass() != this.getClass();
         if (otroEsNull || claseDist) {
             return false;
         }
         Recordatorio otroRecordatorio = (Recordatorio) otro;
-        return mensajeClase == otroRecordatorio.mensajeClase && horarioClase == otroRecordatorio.horarioClase
-                && otroRecordatorio.fechaClase == fechaClase;
+        // por lo que vimos en labo lo tengo q escribir asi:
+        return mensajeClase == otroRecordatorio.mensajeClase
+                && horarioClase.equals(otroRecordatorio.horarioClase)
+                && fechaClase.equals(otroRecordatorio.fechaClase);
     }
 
 }
