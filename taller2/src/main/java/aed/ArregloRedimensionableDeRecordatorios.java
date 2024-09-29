@@ -2,10 +2,10 @@ package aed;
 
 class ArregloRedimensionableDeRecordatorios {
 
-    private Recordatorio[] arregloRecordatorios = new Recordatorio[0];
+    private Recordatorio[] arregloRecordatorios;
 
     public ArregloRedimensionableDeRecordatorios() {
-
+        arregloRecordatorios = new Recordatorio[0];
     }
 
     public int longitud() {
@@ -56,16 +56,18 @@ class ArregloRedimensionableDeRecordatorios {
     }
 
     public ArregloRedimensionableDeRecordatorios(ArregloRedimensionableDeRecordatorios vector) {
-        this.arregloRecordatorios = new Recordatorio[vector.arregloRecordatorios.length]; 
-        for(int i = 0; i < vector.arregloRecordatorios.length; i++){
-            this.arregloRecordatorios[i] = vector.arregloRecordatorios[i]; 
+        this.arregloRecordatorios = new Recordatorio[vector.arregloRecordatorios.length];
+        for (int i = 0; i < vector.arregloRecordatorios.length; i++) {
+            this.arregloRecordatorios[i] = vector.arregloRecordatorios[i];
         }
-        //la cantidad de operaciones new es del largo del arreglo (pues cada uno de sus elementos contiene uno) mas 1 que seria el de la primera linea del constructor
+        // la cantidad de operaciones new es del largo del arreglo (pues cada uno de sus
+        // elementos contiene uno) mas 1 que seria el de la primera linea del
+        // constructor
     }
 
     public ArregloRedimensionableDeRecordatorios copiar() {
         ArregloRedimensionableDeRecordatorios copia = new ArregloRedimensionableDeRecordatorios(this);
         return copia;
-        //aca se le suma un new a la cuenta anterior
+        // aca se le suma un new a la cuenta anterior
     }
 }
