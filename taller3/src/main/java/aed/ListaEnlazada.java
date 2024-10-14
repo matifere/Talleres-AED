@@ -32,19 +32,48 @@ public class ListaEnlazada<T> implements Secuencia<T> {
     }
 
     public void agregarAdelante(T elem) {
-        throw new UnsupportedOperationException("No implementada aun");
+
+        Nodo nodoAdelante = new Nodo(elem);
+        if (this.cabeza == null) {
+            this.cabeza = nodoAdelante;
+            this.cola = nodoAdelante;
+        } else {
+            nodoAdelante.siguiente = this.cabeza;
+            this.cabeza.anterior = nodoAdelante;
+            this.cabeza = nodoAdelante;
+        }
+        this.longitud += 1;
     }
 
     public void agregarAtras(T elem) {
-        throw new UnsupportedOperationException("No implementada aun");
+
+        Nodo nodoAtras = new Nodo(elem);
+        if (this.cola == null) {
+            this.cabeza = nodoAtras;
+            this.cola = nodoAtras;
+        } else { // esta un poco raro esto
+            nodoAtras.anterior = this.cola;
+            this.cola.siguiente = nodoAtras;
+            this.cola = nodoAtras;
+        }
+        this.longitud += 1;
+
     }
 
     public T obtener(int i) {
-        throw new UnsupportedOperationException("No implementada aun");
+
+        for (int j = 0; j < i; j++) { //recorro los nodos hasta el indice
+            this.cabeza = this.cabeza.siguiente;
+        }
+        return this.cabeza.valor;
     }
 
     public void eliminar(int i) {
-        throw new UnsupportedOperationException("No implementada aun");
+        for (int j = 0; j < i; j++) { 
+            this.cabeza = this.cabeza.siguiente;
+        }
+        //eliminar
+        //reagrupar nodos
     }
 
     public void modificarPosicion(int indice, T elem) {
