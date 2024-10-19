@@ -34,83 +34,149 @@ public class ListaEnlazada<T> implements Secuencia<T> {
     public void agregarAdelante(T elem) {
 
         Nodo nodoAdelante = new Nodo(elem);
-        if (this.cabeza == null) {
-            this.cabeza = nodoAdelante;
-            this.cola = nodoAdelante;
+        if (longitud == 0) {
+            cabeza = cola = nodoAdelante;
         } else {
-            nodoAdelante.siguiente = this.cabeza;
-            this.cabeza.anterior = nodoAdelante;
-            this.cabeza = nodoAdelante;
+            nodoAdelante.siguiente = cabeza;
+            cabeza = nodoAdelante;
         }
-        this.longitud += 1;
+        longitud++;
     }
 
     public void agregarAtras(T elem) {
 
         Nodo nodoAtras = new Nodo(elem);
-        if (this.cola == null) {
-            this.cabeza = nodoAtras;
-            this.cola = nodoAtras;
-        } else { // esta un poco raro esto
-            nodoAtras.anterior = this.cola;
-            this.cola.siguiente = nodoAtras;
-            this.cola = nodoAtras;
+        if (longitud == 0) {
+            cabeza = cola = nodoAtras;
+        } else {
+            cola.siguiente = nodoAtras;
+            cola = nodoAtras;
         }
-        this.longitud += 1;
+        longitud += 1;
 
     }
 
     public T obtener(int i) {
 
-        for (int j = 0; j < i; j++) { //recorro los nodos hasta el indice
-            this.cabeza = this.cabeza.siguiente;
+        Nodo actual = cabeza;
+        for (int j = 0; j < i; j++) {
+            actual = actual.siguiente;
         }
-        return this.cabeza.valor;
+        return actual.valor;
     }
 
     public void eliminar(int i) {
-        for (int j = 0; j < i; j++) { 
-            this.cabeza = this.cabeza.siguiente;
+        // asumo que no se puede ir de rango
+        if (i == 0) { // si es el primer elemento elimino la cabeza
+            cabeza = cabeza.siguiente;
+
+            if (longitud == 1) {
+                cola = null;
+            }
+        } else {
+            Nodo anterior = cabeza;
+            // voy hasta el elemento en i
+            for (int j = 0; j < i - 1; j++) {
+                anterior = anterior.siguiente;
+            }
+            // lo elimino salteandolo
+            anterior.siguiente = anterior.siguiente.siguiente;
+            if (i == longitud - 1) {
+                cola = anterior;
+            }
         }
-        //eliminar
-        //reagrupar nodos
+        longitud--;
     }
 
     public void modificarPosicion(int indice, T elem) {
-        throw new UnsupportedOperationException("No implementada aun");
+        // if (indice == 0) { // puede que esta linea no sea necesaria
+        // cabeza.valor = elem;
+        // if (longitud == 1) {
+        // cola = null;
+        // }
+        // } else {
+        Nodo anterior = cabeza;
+        // voy hasta el elemento en i
+        for (int j = 0; j < indice - 1; j++) {
+            anterior = anterior.siguiente;
+        }
+        anterior.siguiente.valor = elem;
+        if (indice == longitud - 1) {
+            cola = anterior;
+        }
+        // }
+
     }
 
     public ListaEnlazada(ListaEnlazada<T> lista) {
-        throw new UnsupportedOperationException("No implementada aun");
+        // se copian los elementos de la lista pasada
+        this.longitud = lista.longitud;
+        if (lista.cabeza == null) {
+            this.cabeza = this.cola = null;
+        } else {
+            this.cabeza = new Nodo(lista.cabeza.valor);
+
+            Nodo nuevo = this.cabeza;
+            Nodo otrNodo = lista.cabeza.siguiente;
+
+            while (otrNodo != null) {
+                nuevo.siguiente = new Nodo(otrNodo.valor);
+                nuevo = nuevo.siguiente;
+                otrNodo = otrNodo.siguiente;
+            }
+        }
     }
 
     @Override
     public String toString() {
-        throw new UnsupportedOperationException("No implementada aun");
+        String listaDevolver = "[";
+        Nodo actual = cabeza;
+        for (int i = 0; i < longitud - 1; i++) {
+            listaDevolver += actual.valor + ", ";
+            actual = actual.siguiente;
+        }
+        listaDevolver += actual.valor;
+        listaDevolver += "]";
+        return listaDevolver;
     }
 
     private class ListaIterador implements Iterador<T> {
         // Completar atributos privados
+        private int indActual;
+
+        // no se si se puede haces esto pero no se me ocurre otra cosa
+        public ListaIterador() {
+            this.indActual = -1;
+        }
 
         public boolean haySiguiente() {
-            throw new UnsupportedOperationException("No implementada aun");
+            return indActual + 1 < longitud();
         }
 
         public boolean hayAnterior() {
-            throw new UnsupportedOperationException("No implementada aun");
+            return indActual >= 0;
         }
 
         public T siguiente() {
-            throw new UnsupportedOperationException("No implementada aun");
+            indActual++;
+            return obtener(indActual);
         }
 
         public T anterior() {
-            throw new UnsupportedOperationException("No implementada aun");
+            // esto lo deduzco por los test pero parece que cuando va para atras primero se
+            // come una iteracion
+            // o sea si la lista es [1,2,3] y indice =1 tras ejecutar anterior, res = 2. y si
+            // lo ejecuto otra vez, res=1
+            T devolver = obtener(indActual);
+            if (hayAnterior()) {
+                indActual--;
+            }
+            return devolver;
         }
     }
 
     public Iterador<T> iterador() {
-        throw new UnsupportedOperationException("No implementada aun");
+        return new ListaIterador();
     }
 
 }
