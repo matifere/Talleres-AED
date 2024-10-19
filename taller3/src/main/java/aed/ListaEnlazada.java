@@ -19,6 +19,8 @@ public class ListaEnlazada<T> implements Secuencia<T> {
             this.anterior = null;
         }
     }
+    // para el taller no estoy teniendo en cuenta casos donde se pidan elementos
+    // fuera del rango de la lista
 
     public ListaEnlazada() {
         this.cabeza = null;
@@ -66,7 +68,6 @@ public class ListaEnlazada<T> implements Secuencia<T> {
     }
 
     public void eliminar(int i) {
-        // asumo que no se puede ir de rango
         if (i == 0) { // si es el primer elemento elimino la cabeza
             cabeza = cabeza.siguiente;
 
@@ -142,19 +143,14 @@ public class ListaEnlazada<T> implements Secuencia<T> {
 
     private class ListaIterador implements Iterador<T> {
         // Completar atributos privados
-        private int indActual;
-
-        // no se si se puede haces esto pero no se me ocurre otra cosa
-        public ListaIterador() {
-            this.indActual = -1;
-        }
+        private int indActual = -1;
 
         public boolean haySiguiente() {
             return indActual + 1 < longitud();
         }
 
         public boolean hayAnterior() {
-            return indActual >= 0;
+            return indActual > -1;
         }
 
         public T siguiente() {
@@ -165,7 +161,8 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         public T anterior() {
             // esto lo deduzco por los test pero parece que cuando va para atras primero se
             // come una iteracion
-            // o sea si la lista es [1,2,3] y indice =1 tras ejecutar anterior, res = 2. y si
+            // o sea si la lista es [1,2,3] y indice =1 tras ejecutar anterior, res = 2. y
+            // si
             // lo ejecuto otra vez, res=1
             T devolver = obtener(indActual);
             if (hayAnterior()) {
