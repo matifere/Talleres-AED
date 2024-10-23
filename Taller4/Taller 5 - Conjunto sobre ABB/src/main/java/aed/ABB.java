@@ -38,23 +38,39 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         if (largo == 0) {
             return null;
         }
-        return null;
+        Nodo actual = raiz;
+        while (true) {
+            if (actual.menor == null) {
+                return actual.valor;
+            }
+            actual = actual.menor;
+        }
+
     }
 
     public T maximo() {
-        throw new UnsupportedOperationException("No implementada aun");
+        if (largo == 0) {
+            return null;
+        }
+        Nodo actual = raiz;
+        while (true) {
+            if (actual.mayor == null) {
+                return actual.valor;
+            }
+            actual = actual.mayor;
+        }
     }
 
     // empecemos por aca
     public void insertar(T elem) {
 
-        //como no deberian haber elementos repetidos le pregunto si pertenece
+        // como no deberian haber elementos repetidos le pregunto si pertenece
         if (pertenece(elem)) {
             return;
         }
 
         Nodo insertar = new Nodo(elem);
-        
+
         if (cardinal() == 0) { // si el arbol esta vacio entonces se pone el primer elemento
             raiz = insertar;
         } else {
@@ -89,7 +105,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
             return elem == null;
         } else {
 
-            //primero chequeo la raiz
+            // primero chequeo la raiz
             if (raiz.valor == elementoAcomparar.valor) {
                 return true;
             }
@@ -105,7 +121,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
                             return true;
                         } else {
                             actual = actual.menor;
-                            
+
                         }
                     }
 
@@ -115,7 +131,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
                             return true;
                         } else {
                             actual = actual.mayor;
-                            
+
                         }
                     }
 
@@ -131,11 +147,130 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     }
 
     public void eliminar(T elem) {
-        throw new UnsupportedOperationException("No implementada aun");
+        // descarto casos donde el elemento no se encuentre, el arbol sea vacio o el
+        // elem sea null
+        if (!pertenece(elem) || cardinal() == 0 || elem == null) {
+            return;
+        }
+
+        Nodo actual = raiz;
+        Nodo padre = null;
+        boolean esIzq = false;
+
+        // obtengo la refe al nodo
+        while (actual != null && !actual.valor.equals(elem)) {
+            padre = actual;
+            if (elem.compareTo(actual.valor) < 0) {
+                esIzq = true;
+                actual = actual.menor;
+            } else {
+                esIzq = false;
+                actual = actual.mayor;
+            }
+        }
+
+        // caso1, el nodo no tiene hijos
+        if (actual.menor == null && actual.mayor == null) {
+            if (actual == raiz) {
+                raiz = null;
+            } else if (esIzq) {
+                padre.menor = null;
+            } else {
+                padre.mayor = null;
+            }
+        }
+        // caso2 el nodo tiene un hijo (izq o der, no ambos)
+        else if (actual.mayor == null) {
+            if (actual == raiz) {
+                raiz = actual.menor;
+            } else if (esIzq) {
+                padre.menor = actual.menor;
+            } else {
+                padre.mayor = actual.menor;
+            }
+        } else if (actual.menor == null) {
+            if (actual == raiz) {
+                raiz = actual.mayor;
+            } else if (esIzq) {
+                padre.menor = actual.mayor;
+            } else {
+                padre.mayor = actual.mayor;
+            }
+        }
+        // caso 3 el nodo tiene dos hijos
+        else {
+            Nodo sucesor = actual.mayor;
+            Nodo sucesorPadre = actual;
+            // reemplazo los valores por la diagonal
+            while (sucesor.menor != null) {
+                sucesorPadre = sucesor;
+                sucesor = sucesor.menor;
+            }
+
+            actual.valor = sucesor.valor;
+
+            if (sucesorPadre != actual) {
+                sucesorPadre.menor = sucesor.mayor;
+            } else {
+                sucesorPadre.mayor = sucesor.mayor;
+            }
+        }
+
+        largo--;
     }
 
     public String toString() {
-        throw new UnsupportedOperationException("No implementada aun");
+
+        // para este punto intente usar minimo y eliminar pero no logre el resultado (se
+        // sobreescribia el abb actual y generaba problemas)
+        // como no puedo crear funciones auxiliares opte por este codigo
+
+        String devolver = "{";
+        Nodo actual = raiz;
+        boolean primero = true;
+
+        if (actual != null) {
+
+            Nodo nodo = raiz;
+            Nodo siguiente;
+
+            while (nodo != null) {
+                // si no hay nodos menores entonces este nodo es el menor
+
+                if (nodo.menor == null) {
+                    if (!primero) {
+                        devolver += ",";
+                    }
+
+                    devolver += nodo.valor;
+                    primero = false;
+                    nodo = nodo.mayor;
+                } else {
+
+                    siguiente = nodo.menor;
+
+                    while (siguiente.mayor != null && siguiente.mayor != nodo) {
+                        siguiente = siguiente.mayor;
+                    }
+
+                    if (siguiente.mayor == null) {
+                        siguiente.mayor = nodo;
+                        nodo = nodo.menor;
+                    } else {
+                        siguiente.mayor = null;
+                        if (!primero) {
+                            devolver += ",";
+                        }
+                        devolver += nodo.valor;
+                        primero = false;
+                        nodo = nodo.mayor;
+                    }
+                }
+            }
+        }
+
+        devolver += "}";
+        return devolver;
     }
 
     private class ABB_Iterador implements Iterador<T> {
